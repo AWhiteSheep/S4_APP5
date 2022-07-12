@@ -22,9 +22,13 @@ public DescenteRecursive(String in) {
 }
 
 public Terminal getNextTerminal() {
-  Terminal next = UL.get(this.PtrLec);
+  this.currentTerminal = UL.get(this.PtrLec);
   this.PtrLec++;
-  return next;
+  return currentTerminal;
+}
+
+public boolean HasMore() {
+  return this.PtrLec < UL.size();
 }
 
 /** AnalSynt() effectue l'analyse syntaxique et construit l'AST.
@@ -32,7 +36,8 @@ public Terminal getNextTerminal() {
  */
 public ElemAST AnalSynt( ) {
   this.PtrLec = 0;
-  this.currentTerminal = getNextTerminal();
+  getNextTerminal();
+  return E();
 }
 
 
@@ -40,10 +45,30 @@ public ElemAST AnalSynt( ) {
 // ... 
 // ...
 public ElemAST E() {
-  NoeudAST n1 = T();
-  return null;
+  NoeudAST noeud = null;
+  FeuilleAST n1 = (FeuilleAST) T();
+  if(currentTerminal == null)
+    return n1;
+  if(currentTerminal.typeTerminal == TypeTerminal.OPERATEUR)
+  {
+    Terminal operator = currentTerminal;
+    getNextTerminal();
+    ElemAST n2 = E();
+    noeud = new NoeudAST(n1, n2, new FeuilleAST(operator));
+  }
+  return noeud;
 }
 public ElemAST T() {
+  if(currentTerminal.typeTerminal == TypeTerminal.NOMBRE) {
+    FeuilleAST feuille = new FeuilleAST(currentTerminal);
+    if(HasMore())
+      getNextTerminal();
+    else
+      currentTerminal = null;
+    return feuille;
+  } else {
+    ErreurSynt("Erreur ElemAST: n'est pas un UL accepté.");
+  }
   return null;
 }
 

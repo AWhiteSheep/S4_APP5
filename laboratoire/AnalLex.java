@@ -48,7 +48,7 @@ public class AnalLex {
             this.PtrLect++;
             terminalString += currentChar;
             return new Terminal(terminalString);
-          } else if(currentChar == 'a' || currentChar == '1') {
+          } else if(currentChar == 'a' || currentChar == '1' || currentChar == '0') {
             terminalString += currentChar;
             this.Etat = 1;
             this.PtrLect++;
@@ -58,7 +58,7 @@ public class AnalLex {
           }
           break;
         case 1:
-          if(currentChar == 'a' || currentChar == '1') {
+          if(currentChar == 'a' || currentChar == '1' || currentChar == '0') {
             terminalString += currentChar;
             this.PtrLect++;
           } else {

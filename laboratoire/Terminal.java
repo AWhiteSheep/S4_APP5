@@ -21,13 +21,13 @@ public class Terminal {
      this.c = chaine;
      if(this.c.length() == 1) {
          for (int i = 0; i < operators.length; i++) {
-             if(chaine == operators[i]) {
+             if(chaine.equals(operators[i])) {
                  typeTerminal = TypeTerminal.OPERATEUR;
              }
          }
-         if (typeTerminal != null) {
+         if (typeTerminal == null) {
              for (int i = 0; i < operatorPriorite.length; i++) {
-                 if (chaine == operatorPriorite[i]) {
+                 if (chaine.equals(operatorPriorite[i])) {
                      typeTerminal = TypeTerminal.PRIORITE;
                  }
              }

@@ -5,12 +5,12 @@
 public class FeuilleAST extends ElemAST {
 
   // Attribut(s)
-
+    Terminal terminal;
 
 /**Constructeur pour l'initialisation d'attribut(s)
  */
-  public FeuilleAST( ) {  // avec arguments
-    //
+  public FeuilleAST(Terminal terminal) {  // avec arguments
+    this.terminal = terminal;
   }
 
 

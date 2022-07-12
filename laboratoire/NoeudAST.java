@@ -5,13 +5,16 @@
 public class NoeudAST extends ElemAST {
 
   // Attributs
-  public Terminal terminal;
+  public ElemAST elementGauche;
+  public ElemAST elementDroite;
+  public ElemAST sommet;
 
   /** Constructeur pour l'initialisation d'attributs
    */
-  public NoeudAST(Terminal terminal) { // avec arguments
-    //
-    this.terminal = terminal;
+  public NoeudAST(ElemAST elementGauche, ElemAST elementDroite, ElemAST sommet) { // avec arguments
+    this.elementGauche = elementGauche;
+    this.elementDroite = elementDroite;
+    this.sommet = sommet;
   }
 
  
