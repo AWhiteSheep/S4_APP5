@@ -43,21 +43,37 @@ public ElemAST AnalSynt( ) {
 
 // Methode pour chaque symbole non-terminal de la grammaire retenue
 // ...
-  public void T() {
-    if (ULsynth.get(arrayptr).toString()=="0") {
-      FeuilleAST newFeuille = new FeuilleAST("0");
-      arrayptr++;
-      //retourne f...
-    }
-    else
-    {
-      ErreurSynt("Not a symbol");
+  public FeuilleAST T() {
+    while(true) {
+
+      Terminal term = new Terminal("a");
+
+      if (ULsynth.get(arrayptr) == term) {
+        FeuilleAST newFeuille = new FeuilleAST(term);
+        arrayptr++;
+        return newFeuille;
+      }
+
+      else {
+        ErreurSynt("Not a symbol");
+      }
     }
   }
 // ...
-  public void E() {
-    T();
-    
+  public FeuilleAST E() {
+    FeuilleAST n1 = T();
+
+    Terminal term = new Terminal("+");
+
+    if (ULsynth.get(arrayptr) == term) {
+      NoeudAST newNoeud = new NoeudAST(term);
+      arrayptr++;
+
+      FeuilleAST n2 = E();
+      return n2;
+    }
+
+    return n1;
   }
 
 
@@ -74,7 +90,6 @@ public void ErreurSynt(String s)
   public static void main(String[] args) {
     String toWriteLect = "";
     String toWriteEval = "";
-    String toWrite="";
 
     System.out.println("Debut d'analyse syntaxique");
     if (args.length == 0){
@@ -82,7 +97,6 @@ public void ErreurSynt(String s)
       args[0] = "ExpArith.txt";
       args[1] = "ResultatSyntaxique.txt";
     }
-
 
 
     DescenteRecursive dr = new DescenteRecursive(args[0]);

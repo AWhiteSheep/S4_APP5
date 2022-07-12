@@ -52,7 +52,7 @@ public class AnalLex {
 
           return terminal;
 
-        } else if (text.charAt(ptrLect) == '0' || text.charAt(ptrLect) == '1') {
+        } else if (text.charAt(ptrLect) == 'a' || text.charAt(ptrLect) == '1') {
           Etat = 1;
           chaineLocale += text.charAt(ptrLect);
           ptrLect++;
@@ -60,7 +60,7 @@ public class AnalLex {
           ErreurLex("Erreur Etat 0");
         }
       } else if (Etat == 1) {
-        if (text.charAt(ptrLect) == '0' || text.charAt(ptrLect) == '1') {
+        if (text.charAt(ptrLect) == 'a' || text.charAt(ptrLect) == '1') {
           Etat = 1;
           chaineLocale += text.charAt(ptrLect);
           ptrLect++;
