@@ -1,5 +1,10 @@
 public enum TypeTerminal {
     NOMBRE,
-    OPERATEUR,
-    PRIORITE
+    ADDITION,
+    SOUSTRACTION,
+    MULTIPLICATION,
+    DIVISION,
+    PARENTHÈSE_OUVERTE,
+    PARENTHÈSE_FERMEE,
+    VARIABLE
 }

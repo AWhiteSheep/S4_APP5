@@ -46,7 +46,7 @@ public ElemAST AnalSynt( ) {
 // ...
 public ElemAST E() {
   NoeudAST noeud = null;
-  FeuilleAST n1 = (FeuilleAST) T();
+  FeuilleAST n1 = (FeuilleAST) L();
   if(currentTerminal == null)
     return n1;
   if(currentTerminal.typeTerminal == TypeTerminal.OPERATEUR)
@@ -58,7 +58,7 @@ public ElemAST E() {
   }
   return noeud;
 }
-public ElemAST T() {
+public ElemAST L() {
   if(currentTerminal.typeTerminal == TypeTerminal.NOMBRE) {
     FeuilleAST feuille = new FeuilleAST(currentTerminal);
     if(HasMore())

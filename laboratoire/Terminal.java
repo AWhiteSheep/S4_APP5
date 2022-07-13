@@ -1,5 +1,7 @@
 /** @author Ahmed Khoumsi */
 
+import java.lang.reflect.Type;
+
 /** Cette classe identifie les terminaux reconnus et retournes par
  *  l'analyseur lexical
  */
@@ -19,21 +21,33 @@ public class Terminal {
  */	
   public Terminal(String chaine) {   // arguments possibles
      this.c = chaine;
-     if(this.c.length() == 1) {
-         for (int i = 0; i < operators.length; i++) {
-             if(chaine.equals(operators[i])) {
-                 typeTerminal = TypeTerminal.OPERATEUR;
+     switch (chaine) {
+         case "+":
+                typeTerminal = TypeTerminal.ADDITION;
+             break;
+         case "-":
+                typeTerminal = TypeTerminal.SOUSTRACTION;
+                break;
+         case "*":
+             typeTerminal = TypeTerminal.MULTIPLICATION;
+             break;
+         case "/":
+             typeTerminal = TypeTerminal.DIVISION;
+             break;
+         case "(":
+             typeTerminal = TypeTerminal.PARENTHÈSE_OUVERTE;
+             break;
+         case ")":
+             typeTerminal = TypeTerminal.PARENTHÈSE_FERMEE;
+             break;
+         default:
+             try {
+                 Integer.parseInt(chaine);
+                 typeTerminal = TypeTerminal.NOMBRE;
+             } catch (Exception e) {
+                typeTerminal = TypeTerminal.VARIABLE;
              }
-         }
-         if (typeTerminal == null) {
-             for (int i = 0; i < operatorPriorite.length; i++) {
-                 if (chaine.equals(operatorPriorite[i])) {
-                     typeTerminal = TypeTerminal.PRIORITE;
-                 }
-             }
-         }
-     } else {
-         typeTerminal = TypeTerminal.NOMBRE;
+             break;
      }
   }
 
