@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="af0f009f-578f-48b3-ba1e-3c8da87e314b" name="Changes" comment="" />
+    <list default="true" id="e2d6e9b0-1cbb-416b-a158-202e61f3c6c6" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="2Bqz1tW0i3CG1bAoocTbTJbhyp1" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="2Br9LrgiXQg0zmLDr7tHtH8hj22" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -26,28 +25,14 @@
     "last_opened_file_path": "C:/GitHub/S4_APP5/Squelettes java"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration name="AnalLex" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="AnalLex" />
-      <module name="Squelettes java" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.AnalLex" />
-      </list>
-    </recent_temporary>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="af0f009f-578f-48b3-ba1e-3c8da87e314b" name="Changes" comment="" />
-      <created>1657648193780</created>
+      <changelist id="e2d6e9b0-1cbb-416b-a158-202e61f3c6c6" name="Changes" comment="" />
+      <created>1657653283383</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1657648193780</updated>
+      <updated>1657653283383</updated>
     </task>
     <servers />
   </component>

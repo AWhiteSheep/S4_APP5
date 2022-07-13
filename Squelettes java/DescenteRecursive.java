@@ -31,6 +31,9 @@ public DescenteRecursive(String in) {
   }
 }
 
+private boolean isNotDone() {
+  return arrayptr < ULsynth.size();
+}
 
 /** AnalSynt() effectue l'analyse syntaxique et construit l'AST.
  *    Elle retourne une reference sur la racine de l'AST construit
@@ -44,8 +47,7 @@ public ElemAST AnalSynt( ) {
 // Methode pour chaque symbole non-terminal de la grammaire retenue
 // ...
   public FeuilleAST T() {
-    while(true) {
-
+    while(isNotDone()) {
       Terminal term = new Terminal("a");
 
       if (ULsynth.get(arrayptr) == term) {
@@ -58,22 +60,24 @@ public ElemAST AnalSynt( ) {
         ErreurSynt("Not a symbol");
       }
     }
+    return null;
   }
-// ...
-  public FeuilleAST E() {
-    FeuilleAST n1 = T();
+  public ElemAST E() {
 
-    Terminal term = new Terminal("+");
+      FeuilleAST n1 = T();
 
-    if (ULsynth.get(arrayptr) == term) {
-      NoeudAST newNoeud = new NoeudAST(term);
-      arrayptr++;
+      Terminal term = new Terminal("+");
+    while(isNotDone()) {
+      if (ULsynth.get(arrayptr) == term) {
+        ElemAST n2 = E();
+        NoeudAST newNoeud = new NoeudAST(new FeuilleAST(term), n1, n2);
+        arrayptr++;
 
-      FeuilleAST n2 = E();
-      return n2;
+        return newNoeud;
+      }
     }
+      return n1;
 
-    return n1;
   }
 
 

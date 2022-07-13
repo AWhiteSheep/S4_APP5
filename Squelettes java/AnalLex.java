@@ -11,7 +11,13 @@ public class AnalLex {
   int ptrLect;
   String text;
   Terminal terminal;
-  ArrayList<Terminal> UL;
+  //ArrayList<Terminal> UL;
+  String chiffre= "0123456789";
+  String MAJ= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  String MIN= "abcdefghijklmnopqrstuvwxyz";
+  String operateur= "*/+-()";
+  String underscore= "_";
+
 
 /** Constructeur pour l'initialisation d'attribut(s)
  */
@@ -44,31 +50,91 @@ public class AnalLex {
         terminal = new Terminal(chaineLocale);
         return terminal;
       }
+
+      //ETAT 0
       if (Etat == 0) {
-        if (text.charAt(ptrLect) == '+') {
-          terminal = new Terminal("+");
+        //OPERATEURS
+        if (operateur.indexOf(text.charAt(ptrLect)) != -1 ) {
+          terminal = new Terminal(Character.toString(text.charAt(ptrLect)));
           ptrLect++;
-          UL.add(terminal);
+          //UL.add(terminal);
 
           return terminal;
-
-        } else if (text.charAt(ptrLect) == 'a' || text.charAt(ptrLect) == '1') {
-          Etat = 1;
-          chaineLocale += text.charAt(ptrLect);
-          ptrLect++;
-        } else {
-          ErreurLex("Erreur Etat 0");
         }
-      } else if (Etat == 1) {
-        if (text.charAt(ptrLect) == 'a' || text.charAt(ptrLect) == '1') {
+
+        //CHIFFRES
+        else if (chiffre.indexOf(text.charAt(ptrLect)) != -1 ) {
+          Etat = 3;
+          chaineLocale += text.charAt(ptrLect);
+          ptrLect++;
+        }
+
+        //MAJUSCULES
+        else if (MAJ.indexOf(text.charAt(ptrLect)) != -1 ) {
           Etat = 1;
           chaineLocale += text.charAt(ptrLect);
           ptrLect++;
-        } else {
+        }
+
+        //AUTRES
+        else {
+          ErreurLex("Erreur Etat 0: commence avec autre chose que MAJ, chiffre ou operateur");
+        }
+      }
+
+      //ETAT 1
+      else if (Etat == 1) {
+        //MIN/MAJ
+        if (MAJ.indexOf(text.charAt(ptrLect)) != -1 || MIN.indexOf(text.charAt(ptrLect)) != -1){
+          Etat = 1;
+          chaineLocale += text.charAt(ptrLect);
+          ptrLect++;
+        }
+        //UNDERSCORE
+        else if (underscore.indexOf(text.charAt(ptrLect)) != -1){
+          Etat = 2;
+          chaineLocale += text.charAt(ptrLect);
+          ptrLect++;
+        }
+        //AUTRE
+        else {
+          Etat = 0;
+          terminal = new Terminal(chaineLocale);
+          //UL.add(terminal);
+          return terminal;
+        }
+      }
+
+      //ETAT 2
+      else if (Etat == 2) {
+        //MIN/MAJ
+        if (MAJ.indexOf(text.charAt(ptrLect)) != -1 || MIN.indexOf(text.charAt(ptrLect)) != -1){
+          Etat = 1;
+          chaineLocale += text.charAt(ptrLect);
+          ptrLect++;
+        }
+        //AUTRE
+        else {
+          ErreurLex("Erreur Etat 2: 2 underscores ou fini avec underscore");
+        }
+      }
+
+      //ETAT 3
+      else if (Etat == 3) {
+
+        //CHIFFRE
+        if (chiffre.indexOf(text.charAt(ptrLect)) != -1) {
+          Etat = 3;
+          chaineLocale += text.charAt(ptrLect);
+          ptrLect++;
+        }
+
+        //AUTRE
+        else {
           //ptrLect--;
           Etat = 0;
           terminal = new Terminal(chaineLocale);
-          UL.add(terminal);
+          //UL.add(terminal);
           return terminal;
         }
       } else {
@@ -83,11 +149,12 @@ public class AnalLex {
   public void ErreurLex(String s) {	
      //
     System.out.println(s);
+    System.exit(0);
   }
 
-  public ArrayList<Terminal> GetUL(){
+  /*public ArrayList<Terminal> GetUL(){
     return UL;
-  }
+  }*/
   
   //Methode principale a lancer pour tester l'analyseur lexical
   public static void main(String[] args) {

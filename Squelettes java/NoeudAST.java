@@ -9,7 +9,7 @@ public class NoeudAST extends ElemAST {
 
   /** Constructeur pour l'initialisation d'attributs
    */
-  public NoeudAST(Terminal operateur) { // avec arguments
+  public NoeudAST(FeuilleAST operateur, ElemAST n1, ElemAST n2) { // avec arguments
     //
   }
 
