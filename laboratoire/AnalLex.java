@@ -9,9 +9,15 @@ public class AnalLex {
 
 // Attributs
 //  ...
-  public int Etat;
-  public int PtrLect;
-  public String text;
+int Etat;
+  int ptrLect;
+  String text;
+  Terminal terminal;
+  String chiffre= "0123456789";
+  String MAJ= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  String MIN= "abcdefghijklmnopqrstuvwxyz";
+  String operateur= "*/+-()";
+  String underscore= "_";
   public ArrayList<Terminal> UL;
 
 
@@ -19,6 +25,8 @@ public class AnalLex {
  */
   public AnalLex(String arg) {  // arguments possibles
     //
+    Etat = 0;
+    ptrLect = 0;
     this.text = arg;
   }
 
@@ -28,7 +36,7 @@ public class AnalLex {
       true s'il reste encore au moins un terminal qui n'a pas ete retourne 
  */
   public boolean resteTerminal() {
-      return this.PtrLect != this.text.length();
+      return this.ptrLect != this.text.length();
   }
   
   
@@ -36,38 +44,102 @@ public class AnalLex {
       Cette methode est une implementation d'un AEF
  */  
   public Terminal prochainTerminal() {
-    String terminalString = "";
-    this.Etat = 0;
+    String chaineLocale= "";
+
     while(true) {
-      if(this.PtrLect >= this.text.length())
-        return new Terminal(terminalString);
-      char currentChar = this.text.charAt(this.PtrLect);
-      switch (this.Etat) {
-        case 0:
-          if(currentChar == '+') {
-            this.PtrLect++;
-            terminalString += currentChar;
-            return new Terminal(terminalString);
-          } else if(currentChar == 'a' || currentChar == '1' || currentChar == '0') {
-            terminalString += currentChar;
-            this.Etat = 1;
-            this.PtrLect++;
-          } else {
-            ErreurLex("n'est pas dans les char accepté");
-            return null;
-          }
-          break;
-        case 1:
-          if(currentChar == 'a' || currentChar == '1' || currentChar == '0') {
-            terminalString += currentChar;
-            this.PtrLect++;
-          } else {
-            return new Terminal(terminalString);
-          }
-          break;
-        default:
-          ErreurLex("wtf");
-          return null;
+      if (ptrLect>= this.text.length()){
+        terminal = new Terminal(chaineLocale);
+        return terminal;
+      }
+
+      //ETAT 0
+      if (Etat == 0) {
+        //OPERATEURS
+        if (operateur.indexOf(text.charAt(ptrLect)) != -1 ) {
+          terminal = new Terminal(Character.toString(text.charAt(ptrLect)));
+          ptrLect++;
+          //UL.add(terminal);
+
+          return terminal;
+        }
+
+        //CHIFFRES
+        else if (chiffre.indexOf(text.charAt(ptrLect)) != -1 ) {
+          Etat = 3;
+          chaineLocale += text.charAt(ptrLect);
+          ptrLect++;
+        }
+
+        //MAJUSCULES
+        else if (MAJ.indexOf(text.charAt(ptrLect)) != -1 ) {
+          Etat = 1;
+          chaineLocale += text.charAt(ptrLect);
+          ptrLect++;
+        }
+
+        //AUTRES
+        else {
+          ErreurLex("Erreur Etat 0: commence avec autre chose que MAJ, chiffre ou operateur");
+        }
+      }
+
+      //ETAT 1
+      else if (Etat == 1) {
+        //MIN/MAJ
+        if (MAJ.indexOf(text.charAt(ptrLect)) != -1 || MIN.indexOf(text.charAt(ptrLect)) != -1){
+          Etat = 1;
+          chaineLocale += text.charAt(ptrLect);
+          ptrLect++;
+        }
+        //UNDERSCORE
+        else if (underscore.indexOf(text.charAt(ptrLect)) != -1){
+          Etat = 2;
+          chaineLocale += text.charAt(ptrLect);
+          ptrLect++;
+        }
+        //AUTRE
+        else {
+          Etat = 0;
+          terminal = new Terminal(chaineLocale);
+          //UL.add(terminal);
+          return terminal;
+        }
+      }
+
+      //ETAT 2
+      else if (Etat == 2) {
+        //MIN/MAJ
+        if (MAJ.indexOf(text.charAt(ptrLect)) != -1 || MIN.indexOf(text.charAt(ptrLect)) != -1){
+          Etat = 1;
+          chaineLocale += text.charAt(ptrLect);
+          ptrLect++;
+        }
+        //AUTRE
+        else {
+          ErreurLex("Erreur Etat 2: 2 underscores ou fini avec underscore");
+        }
+      }
+
+      //ETAT 3
+      else if (Etat == 3) {
+
+        //CHIFFRE
+        if (chiffre.indexOf(text.charAt(ptrLect)) != -1) {
+          Etat = 3;
+          chaineLocale += text.charAt(ptrLect);
+          ptrLect++;
+        }
+
+        //AUTRE
+        else {
+          //ptrLect--;
+          Etat = 0;
+          terminal = new Terminal(chaineLocale);
+          //UL.add(terminal);
+          return terminal;
+        }
+      } else {
+        ErreurLex("Autre etat");
       }
     }
   }
@@ -77,10 +149,11 @@ public class AnalLex {
  */ 
   public void ErreurLex(String s) {
     System.out.println(s);
+    System.exit(0);
   }
 
   public ArrayList<Terminal> doAnalLex() {
-    this.PtrLect = 0;
+    this.ptrLect = 0;
     this.UL = new ArrayList<>();
     Terminal t = null;
     while(this.resteTerminal()){

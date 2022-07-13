@@ -49,7 +49,7 @@ public ElemAST E() {
   FeuilleAST n1 = (FeuilleAST) L();
   if(currentTerminal == null)
     return n1;
-  if(currentTerminal.typeTerminal == TypeTerminal.OPERATEUR)
+  if(currentTerminal.typeTerminal == TypeTerminal.ADDITION)
   {
     Terminal operator = currentTerminal;
     getNextTerminal();
