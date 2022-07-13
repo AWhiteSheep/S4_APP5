@@ -5,12 +5,16 @@
 public class NoeudAST extends ElemAST {
 
   // Attributs
-  String operateurs = "+*/-";
+  Terminal operateurNoeud;
+  ElemAST n1, n2;
 
   /** Constructeur pour l'initialisation d'attributs
    */
-  public NoeudAST(FeuilleAST operateur, ElemAST n1, ElemAST n2) { // avec arguments
+  public NoeudAST(Terminal operateur, ElemAST n1, ElemAST n2) { // avec arguments
     //
+    this.operateurNoeud = operateur;
+    this.n1 = n1;
+    this.n2 = n2;
   }
 
  
@@ -25,8 +29,9 @@ public class NoeudAST extends ElemAST {
   /** Lecture de noeud d'AST
    */
   public String LectAST( ) {
-     //
-    return "";
+    n1.LectAST();
+    n2.LectAST();
+    return this.operateurNoeud.chaine;
   }
 
 }

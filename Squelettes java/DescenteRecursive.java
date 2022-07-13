@@ -9,7 +9,12 @@ public class DescenteRecursive {
   // Attributs
   int arrayptr;
   ArrayList<Terminal> ULsynth;
-  Terminal t;
+
+  Terminal currentTerminal;
+
+  String chiffre= "0123456789";
+  String variable= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
+  String operateur= "*/+-()";
 
 /** Constructeur de DescenteRecursive :
       - recoit en argument le nom du fichier contenant l'expression a analyser
@@ -18,13 +23,12 @@ public class DescenteRecursive {
 public DescenteRecursive(String in) {
     //
   arrayptr = 0;
-
   Reader r = new Reader(in);
-
   AnalLex lexical = new AnalLex(r.toString()); // Creation de l'analyseur lexical
 
   // Execution de l'analyseur lexical
-  t = null;
+  Terminal t = null;
+  this.ULsynth = new ArrayList<>();
   while(lexical.resteTerminal()){
     t = lexical.prochainTerminal();
     ULsynth.add(t);  // contient la liste des ULs
@@ -35,49 +39,50 @@ private boolean isNotDone() {
   return arrayptr < ULsynth.size();
 }
 
+private Terminal nextTerminal() {
+  this.currentTerminal = ULsynth.get(this.arrayptr);
+  this.arrayptr++;
+  return currentTerminal;
+}
+
 /** AnalSynt() effectue l'analyse syntaxique et construit l'AST.
  *    Elle retourne une reference sur la racine de l'AST construit
  */
 public ElemAST AnalSynt( ) {
-
-  return null;
+  arrayptr = 0;
+  nextTerminal();
+  return E();
 }
 
 
 // Methode pour chaque symbole non-terminal de la grammaire retenue
 // ...
   public FeuilleAST T() {
-    while(isNotDone()) {
-      Terminal term = new Terminal("a");
-
-      if (ULsynth.get(arrayptr) == term) {
-        FeuilleAST newFeuille = new FeuilleAST(term);
-        arrayptr++;
-        return newFeuille;
-      }
-
-      else {
-        ErreurSynt("Not a symbol");
-      }
+    if(chiffre.contains(currentTerminal.chaine) || variable.contains(currentTerminal.chaine)) {
+      FeuilleAST feuille = new FeuilleAST(currentTerminal);
+      if(isNotDone())
+        nextTerminal();
+      else
+        currentTerminal = null;
+      return feuille;
+    } else {
+      ErreurSynt("Erreur ElemAST: n'est pas un UL accepte.");
     }
     return null;
   }
   public ElemAST E() {
-
-      FeuilleAST n1 = T();
-
-      Terminal term = new Terminal("+");
-    while(isNotDone()) {
-      if (ULsynth.get(arrayptr) == term) {
-        ElemAST n2 = E();
-        NoeudAST newNoeud = new NoeudAST(new FeuilleAST(term), n1, n2);
-        arrayptr++;
-
-        return newNoeud;
-      }
-    }
+    NoeudAST noeud = null;
+    FeuilleAST n1 = (FeuilleAST) T();
+    if(currentTerminal == null)
       return n1;
-
+    if(operateur.contains(currentTerminal.chaine))
+    {
+      Terminal operator = currentTerminal;
+      nextTerminal();
+      ElemAST n2 = E();
+      noeud = new NoeudAST(operator, n1, n2);
+    }
+    return noeud;
   }
 
 
@@ -86,6 +91,7 @@ public ElemAST AnalSynt( ) {
 public void ErreurSynt(String s)
 {
   System.out.println(s);
+  System.exit(0);
 }
 
 

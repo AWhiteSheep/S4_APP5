@@ -26,7 +26,7 @@
     "last_opened_file_path": "C:/GitHub/S4_APP5/Squelettes java"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.DescenteRecursive">
     <configuration name="AnalLex" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="AnalLex" />
       <module name="Squelettes java" />
@@ -34,8 +34,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="DescenteRecursive" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DescenteRecursive" />
+      <module name="Squelettes java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.DescenteRecursive" />
         <item itemvalue="Application.AnalLex" />
       </list>
     </recent_temporary>

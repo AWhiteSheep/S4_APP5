@@ -5,13 +5,13 @@
 public class FeuilleAST extends ElemAST {
 
   // Attribut(s)
-    String symboles = "0123456789abcdefghijklmnopqrstvwxyz";
-
+    Terminal SymboleFeuille;
 
 /**Constructeur pour l'initialisation d'attribut(s)
  */
   public FeuilleAST(Terminal symbole) {  // avec arguments
     //
+      this.SymboleFeuille = symbole;
   }
 
 
@@ -26,8 +26,7 @@ public class FeuilleAST extends ElemAST {
  /** Lecture de chaine de caracteres correspondant a la feuille d'AST
   */
   public String LectAST( ) {
-    //
-      return "";
+      return this.SymboleFeuille.chaine;
   }
 
 }
