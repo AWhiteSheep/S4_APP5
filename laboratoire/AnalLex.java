@@ -28,7 +28,7 @@ int Etat;
     //
     Etat = 0;
     ptrLect = 0;
-    this.text = arg;
+    this.text = arg.replace(" ", "");
     this.ULbeforeError = new ArrayList<>();
   }
 
@@ -111,7 +111,7 @@ int Etat;
         else if (underscore.indexOf(text.charAt(ptrLect)) != -1){
           Etat = 2;
           chaineLocale += text.charAt(ptrLect);
-
+          ptrLect++;
         }
         //AUTRE
         else {
@@ -133,7 +133,7 @@ int Etat;
         }
         //AUTRE
         else {
-
+          ptrLect--;
           terminal = new Terminal(chaineLocale );
 
           ULbeforeError.add(terminal);
