@@ -1,2 +1,2 @@
-Lecture de l'AST trouve : null
-Evaluation de l'AST trouve : 0
+Lecture de l'AST trouve : 2+11-11+11111+11111
+Evaluation de l'AST trouve : 22224

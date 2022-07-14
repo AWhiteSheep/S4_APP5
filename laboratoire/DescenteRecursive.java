@@ -43,23 +43,38 @@ public ElemAST AnalSynt( ) {
 
 // Methode pour chaque symbole non-terminal de la grammaire retenue
 // ... 
-// ...
+// E -> K + E | K - E | K
 public ElemAST E() {
-  NoeudAST noeud = null;
-  FeuilleAST n1 = (FeuilleAST) L();
+  ElemAST noeud = K();
   if(currentTerminal == null)
-    return n1;
-  if(currentTerminal.typeTerminal == TypeTerminal.ADDITION)
+    return noeud;
+  if(currentTerminal.typeTerminal == TypeTerminal.ADDITION || currentTerminal.typeTerminal == TypeTerminal.SOUSTRACTION)
   {
     Terminal operator = currentTerminal;
     getNextTerminal();
     ElemAST n2 = E();
-    noeud = new NoeudAST(n1, n2, new FeuilleAST(operator));
+    noeud = new NoeudAST(noeud, n2, new FeuilleAST(operator));
   }
   return noeud;
 }
+
+public ElemAST K() {
+  ElemAST noeud = L();
+  if(currentTerminal == null)
+    return noeud;
+  if(currentTerminal.typeTerminal == TypeTerminal.MULTIPLICATION || currentTerminal.typeTerminal == TypeTerminal.DIVISION) {
+    FeuilleAST feuille = new FeuilleAST(currentTerminal);
+    Terminal operator = currentTerminal;
+    getNextTerminal();
+    ElemAST n2 = E();
+    noeud = new NoeudAST(noeud, n2, new FeuilleAST(operator));
+  }
+  return noeud;
+}
+
 public ElemAST L() {
-  if(currentTerminal.typeTerminal == TypeTerminal.NOMBRE) {
+  if(currentTerminal.typeTerminal == TypeTerminal.NOMBRE || currentTerminal.typeTerminal == TypeTerminal.PARENTHÈSE_OUVERTE ||
+        currentTerminal.typeTerminal == TypeTerminal.PARENTHÈSE_FERMEE) {
     FeuilleAST feuille = new FeuilleAST(currentTerminal);
     if(HasMore())
       getNextTerminal();
