@@ -19,6 +19,7 @@ int Etat;
   String operateur= "*/+-()";
   String underscore= "_";
   public ArrayList<Terminal> UL;
+  private ArrayList<Terminal> ULbeforeError;
 
 
 /** Constructeur pour l'initialisation d'attribut(s)
@@ -28,8 +29,8 @@ int Etat;
     Etat = 0;
     ptrLect = 0;
     this.text = arg;
+    this.ULbeforeError = new ArrayList<>();
   }
-
 
 /** resteTerminal() retourne :
       false  si tous les terminaux de l'expression arithmetique ont ete retournes
@@ -38,7 +39,14 @@ int Etat;
   public boolean resteTerminal() {
       return this.ptrLect != this.text.length();
   }
-  
+
+  private void printULbeforeError() {
+
+    for (int i = 0; i < ULbeforeError.size(); i++) {
+      Terminal terminal1 = ULbeforeError.get(i);
+      System.out.println(terminal1.typeTerminal + " " + terminal1.c);
+    }
+  }
   
 /** prochainTerminal() retourne le prochain terminal
       Cette methode est une implementation d'un AEF
@@ -46,9 +54,12 @@ int Etat;
   public Terminal prochainTerminal() {
     String chaineLocale= "";
 
+
     while(true) {
       if (ptrLect>= this.text.length()){
         terminal = new Terminal(chaineLocale);
+
+
         return terminal;
       }
 
@@ -58,7 +69,7 @@ int Etat;
         if (operateur.indexOf(text.charAt(ptrLect)) != -1 ) {
           terminal = new Terminal(Character.toString(text.charAt(ptrLect)));
           ptrLect++;
-          //UL.add(terminal);
+          ULbeforeError.add(terminal);
 
           return terminal;
         }
@@ -79,7 +90,12 @@ int Etat;
 
         //AUTRES
         else {
-          ErreurLex("Erreur Etat 0: commence avec autre chose que MAJ, chiffre ou operateur");
+          terminal = new Terminal(chaineLocale + text.charAt(ptrLect));
+          ULbeforeError.add(terminal);
+          ErreurLex("Lieu:" + ptrLect + "\nCause: '" + text.charAt(ptrLect) + "' nest pas permis\n" +
+                  "Doit commencer par MAJ, chiffre ou operateur\n");
+
+          //return terminal;
         }
       }
 
@@ -95,13 +111,14 @@ int Etat;
         else if (underscore.indexOf(text.charAt(ptrLect)) != -1){
           Etat = 2;
           chaineLocale += text.charAt(ptrLect);
-          ptrLect++;
+
         }
         //AUTRE
         else {
           Etat = 0;
           terminal = new Terminal(chaineLocale);
-          //UL.add(terminal);
+          ULbeforeError.add(terminal);
+
           return terminal;
         }
       }
@@ -116,7 +133,12 @@ int Etat;
         }
         //AUTRE
         else {
-          ErreurLex("Erreur Etat 2: 2 underscores ou fini avec underscore");
+
+          terminal = new Terminal(chaineLocale );
+
+          ULbeforeError.add(terminal);
+          ErreurLex("Lieu:" + ptrLect + "\nCause: '" + text.charAt(ptrLect) + "' nest pas permis\n" +
+                  "Ne peut avoir 2 underscores de suite ou finir avec un underscore.\n");
         }
       }
 
@@ -135,19 +157,26 @@ int Etat;
           //ptrLect--;
           Etat = 0;
           terminal = new Terminal(chaineLocale);
-          //UL.add(terminal);
+          ULbeforeError.add(terminal);
           return terminal;
         }
       } else {
-        ErreurLex("Autre etat");
+        terminal = new Terminal(chaineLocale + text.charAt(ptrLect));
+        ULbeforeError.add(terminal);
+        ErreurLex("Lieu:" + ptrLect + "\nCause: '" + text.charAt(ptrLect) + "' nest pas permis\n" + "Autre etat \n");
+
       }
+
+
     }
+
   }
 
  
 /** ErreurLex() envoie un message d'erreur lexicale
  */ 
   public void ErreurLex(String s) {
+    printULbeforeError();
     System.out.println(s);
     System.exit(0);
   }
@@ -181,7 +210,7 @@ int Etat;
     Terminal t = null;
     while(lexical.resteTerminal()){
       t = lexical.prochainTerminal();
-      toWrite +=t.c + "\n" ;  // toWrite contient le resultat
+      toWrite +=t.typeTerminal.toString() + " " + t.c + "\n" ;  // toWrite contient le resultat
     }				   //    d'analyse lexicale
     System.out.println(toWrite); 	// Ecriture de toWrite sur la console
     Writer w = new Writer(args[1],toWrite); // Ecriture de toWrite dans fichier args[1]
