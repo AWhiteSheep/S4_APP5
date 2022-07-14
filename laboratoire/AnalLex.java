@@ -131,6 +131,14 @@ int Etat;
           chaineLocale += text.charAt(ptrLect);
           ptrLect++;
         }
+        //UNDERSCORE
+        else if (underscore.indexOf(text.charAt(ptrLect)) != -1 ){
+          terminal = new Terminal(chaineLocale + text.charAt(ptrLect));
+
+          ULbeforeError.add(terminal);
+          ErreurLex("Lieu:" + ptrLect + "\nCause: '" + text.charAt(ptrLect) + "' nest pas permis\n" +
+                  "Ne peut avoir 2 underscores de suite.\n");
+        }
         //AUTRE
         else {
           ptrLect--;
@@ -138,7 +146,7 @@ int Etat;
 
           ULbeforeError.add(terminal);
           ErreurLex("Lieu:" + ptrLect + "\nCause: '" + text.charAt(ptrLect) + "' nest pas permis\n" +
-                  "Ne peut avoir 2 underscores de suite ou finir avec un underscore.\n");
+                  "Ne peut finir avec un underscore.\n");
         }
       }
 
