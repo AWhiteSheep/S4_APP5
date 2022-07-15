@@ -23,8 +23,8 @@ public DescenteRecursive(String in) {
 }
 
 public Terminal getNextTerminal() {
-  this.currentTerminal = UL.get(this.PtrLec);
   this.PtrLec++;
+  this.currentTerminal = UL.get(this.PtrLec);
   return currentTerminal;
 }
 
@@ -36,7 +36,7 @@ public boolean HasMore() {
  *    Elle retourne une reference sur la racine de l'AST construit
  */
 public ElemAST AnalSynt( ) {
-  this.PtrLec = 0;
+  this.PtrLec = -1;
   getNextTerminal();
   return E();
 }
@@ -82,7 +82,7 @@ public ElemAST L() {
     }
     getNextTerminal();
     return n1;
-  }else if(currentTerminal.typeTerminal == TypeTerminal.NOMBRE) {
+  }else if(currentTerminal.typeTerminal == TypeTerminal.NOMBRE || currentTerminal.typeTerminal == TypeTerminal.VARIABLE) {
     FeuilleAST feuille = new FeuilleAST(currentTerminal);
     if(HasMore())
       getNextTerminal();
@@ -91,7 +91,7 @@ public ElemAST L() {
     return feuille;
   } else {
 
-    currentTerminal= getNextTerminal();
+
     ErreurSynt("Lieu:" + PtrLec + "\nCause: '" + currentTerminal.typeTerminal + " "+ currentTerminal.c
             + "' nest pas un UL permis a cet endroit\n");
   }
@@ -103,9 +103,10 @@ public ElemAST L() {
  */
 public void ErreurSynt(String s)
 {
-    lexical.printULbeforeError();
-    System.out.println(s);
-    System.exit(0);
+
+  lexical.printULbeforeError();
+  System.out.println(s);
+  System.exit(0);
 }
 
 private void printBeforeError(){
@@ -130,6 +131,8 @@ private void printBeforeError(){
     try {
       ElemAST RacineAST = dr.AnalSynt();
       toWriteLect += "Lecture de l'AST trouve : " + RacineAST.LectAST() + "\n";
+      System.out.println(toWriteLect);
+      toWriteLect += "Lecture de postfix trouve : " + RacineAST.PostFix() + "\n";
       System.out.println(toWriteLect);
       toWriteEval += "Evaluation de l'AST trouve : " + RacineAST.EvalAST() + "\n";
       System.out.println(toWriteEval);

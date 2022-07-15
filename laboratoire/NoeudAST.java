@@ -21,14 +21,17 @@ public class NoeudAST extends ElemAST {
   /** Evaluation de noeud d'AST
    */
   public int EvalAST( ) {
-    return ((FeuilleAST)this.sommet).calculer(this.elementDroite.EvalAST(), this.elementGauche.EvalAST());
+    return ((FeuilleAST)this.sommet).calculer(this.elementGauche.EvalAST(),this.elementDroite.EvalAST());
   }
 
 
   /** Lecture de noeud d'AST
    */
+  public String PostFix( ) {
+     return this.elementGauche.PostFix() + " " + this.elementDroite.PostFix() + " " + ((FeuilleAST)this.sommet).LectAST();
+  }
   public String LectAST( ) {
-     return this.elementDroite.LectAST() + " " + this.elementGauche.LectAST() + " " + ((FeuilleAST)this.sommet).LectAST();
+    return "(" + this.elementGauche.LectAST() + this.sommet.LectAST() + this.elementDroite.LectAST() + ")";
   }
 }
 

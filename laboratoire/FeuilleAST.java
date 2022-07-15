@@ -26,6 +26,9 @@ public class FeuilleAST extends ElemAST {
   public String LectAST( ) {
     return this.terminal.c;
   }
+    public String PostFix( ) {
+        return this.terminal.c;
+    }
 
 
     public int calculer(int operandGauche, int operandDroite) {
