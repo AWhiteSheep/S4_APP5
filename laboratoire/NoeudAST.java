@@ -20,7 +20,7 @@ public class NoeudAST extends ElemAST {
  
   /** Evaluation de noeud d'AST
    */
-  public int EvalAST( ) {
+  public int EvalAST( ) throws Exception {
     return ((FeuilleAST)this.sommet).calculer(this.elementGauche.EvalAST(),this.elementDroite.EvalAST());
   }
 

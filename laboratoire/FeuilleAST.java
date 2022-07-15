@@ -16,8 +16,15 @@ public class FeuilleAST extends ElemAST {
 
   /** Evaluation de feuille d'AST
    */
-  public int EvalAST() {
-      return Integer.parseInt(this.terminal.c);
+  public int EvalAST() throws Exception {
+      int evaluation = 0;
+      try {
+        evaluation= Integer.parseInt(this.terminal.c);
+        }
+      catch (Exception e) {
+          throw new Exception("Ne peux pas parser la variable en integer pour l'evaluation: " + this.terminal.c);
+      }
+      return evaluation;
   }
 
 

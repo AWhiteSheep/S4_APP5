@@ -29,7 +29,8 @@ public Terminal getNextTerminal() {
 }
 
 public boolean HasMore() {
-  return this.PtrLec < UL.size();
+
+  return this.PtrLec < UL.size()-1;
 }
 
 /** AnalSynt() effectue l'analyse syntaxique et construit l'AST.
@@ -69,6 +70,9 @@ public ElemAST K() {
     getNextTerminal();
     ElemAST n2 = E();
     noeud = new NoeudAST(noeud, n2, new FeuilleAST(operator));
+  } else if(currentTerminal.typeTerminal == TypeTerminal.NOMBRE || currentTerminal.typeTerminal == TypeTerminal.VARIABLE){
+    ErreurSynt("Lieu:" + PtrLec + "\nCause: '" + currentTerminal.typeTerminal + " "+ currentTerminal.c
+            + "' Une nombre ne peut pas suivre une variable ou bien une variable ne peut pas suivre directement un nombre.\n");
   }
   return noeud;
 }
@@ -90,8 +94,6 @@ public ElemAST L() {
       currentTerminal = null;
     return feuille;
   } else {
-
-
     ErreurSynt("Lieu:" + PtrLec + "\nCause: '" + currentTerminal.typeTerminal + " "+ currentTerminal.c
             + "' nest pas un UL permis a cet endroit\n");
   }

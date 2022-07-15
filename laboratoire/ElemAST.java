@@ -7,7 +7,7 @@ public abstract class ElemAST {
   
   /** Evaluation d'AST
    */
-  public abstract int EvalAST();
+  public abstract int EvalAST() throws Exception;
   public abstract String PostFix();
 
   /** Lecture d'AST
