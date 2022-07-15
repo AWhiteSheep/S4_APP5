@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class DescenteRecursive {
 
   // Attributs
+  AnalLex lexical;
   public ArrayList<Terminal> UL;
   public Terminal currentTerminal;
   public int PtrLec;
@@ -17,7 +18,7 @@ public class DescenteRecursive {
  */
 public DescenteRecursive(String in) {
   Reader r = new Reader(in);
-  AnalLex lexical = new AnalLex(r.toString()); // Creation de l'analyseur lexical
+  lexical = new AnalLex(r.toString()); // Creation de l'analyseur lexical
   UL = lexical.doAnalLex();
 }
 
@@ -73,8 +74,15 @@ public ElemAST K() {
 }
 
 public ElemAST L() {
-  if(currentTerminal.typeTerminal == TypeTerminal.NOMBRE || currentTerminal.typeTerminal == TypeTerminal.PARENTHÈSE_OUVERTE ||
-        currentTerminal.typeTerminal == TypeTerminal.PARENTHÈSE_FERMEE) {
+  if(currentTerminal.typeTerminal == TypeTerminal.PARENTHÈSE_OUVERTE) {
+    getNextTerminal();
+    ElemAST n1 = E();
+    if(currentTerminal.typeTerminal != TypeTerminal.PARENTHÈSE_FERMEE) {
+
+    }
+    getNextTerminal();
+    return n1;
+  }else if(currentTerminal.typeTerminal == TypeTerminal.NOMBRE) {
     FeuilleAST feuille = new FeuilleAST(currentTerminal);
     if(HasMore())
       getNextTerminal();
@@ -82,7 +90,10 @@ public ElemAST L() {
       currentTerminal = null;
     return feuille;
   } else {
-    ErreurSynt("Erreur ElemAST: n'est pas un UL accepté.");
+
+    currentTerminal= getNextTerminal();
+    ErreurSynt("Lieu:" + PtrLec + "\nCause: '" + currentTerminal.typeTerminal + " "+ currentTerminal.c
+            + "' nest pas un UL permis a cet endroit\n");
   }
   return null;
 }
@@ -92,10 +103,17 @@ public ElemAST L() {
  */
 public void ErreurSynt(String s)
 {
-    //
+    lexical.printULbeforeError();
+    System.out.println(s);
+    System.exit(0);
 }
 
-
+private void printBeforeError(){
+  for (int i=0; i< UL.size(); i++){
+    Terminal eachTerm = UL.get(i);
+    System.out.println(eachTerm.typeTerminal + " " + eachTerm.c + "\n");
+  }
+}
 
   //Methode principale a lancer pour tester l'analyseur syntaxique 
   public static void main(String[] args) {

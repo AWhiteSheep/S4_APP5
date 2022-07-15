@@ -40,7 +40,8 @@ int Etat;
       return this.ptrLect != this.text.length();
   }
 
-  private void printULbeforeError() {
+
+  public void printULbeforeError() {
 
     for (int i = 0; i < ULbeforeError.size(); i++) {
       Terminal terminal1 = ULbeforeError.get(i);
