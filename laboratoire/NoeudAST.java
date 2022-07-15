@@ -28,9 +28,8 @@ public class NoeudAST extends ElemAST {
   /** Lecture de noeud d'AST
    */
   public String LectAST( ) {
-     return this.elementGauche.LectAST() + this.sommet.LectAST() + this.elementDroite.LectAST();
+     return this.elementDroite.LectAST() + " " + this.elementGauche.LectAST() + " " + ((FeuilleAST)this.sommet).LectAST();
   }
-
 }
 
 
